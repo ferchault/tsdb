@@ -1,6 +1,7 @@
 #!/bin/bash
 rm -f final-ts/*
 
+# extract total electronic energies
 echo "calc label energy" > data-electronic-energies.txt
 for i in $(find 03-ts-validated/ -maxdepth 1 -mindepth 1 ); 
 do
@@ -11,6 +12,7 @@ do
 	echo $CALC $LABEL $(grep 'FINAL SINGLE POINT ENERGY' $LASTLOG | tail -1 | sed 's/.* //')
 done >> data-electronic-energies.txt
 
+# extract free energies
 echo "calc label enthalpy" > data-gibbs-enthalpy.txt
 for i in $(find 03-ts-validated/ -maxdepth 1 -mindepth 1 ); 
 do
@@ -22,17 +24,19 @@ do
 	cp $(echo $LASTLOG | sed 's/run.log$/inp.xyz/') final-ts/$CALC.xyz
 done >> data-gibbs-enthalpy.txt
 
+# build progress list of the individual stages
 for i in 0*
 do
-	#ls $i > data-$i.txt
 	find $i -maxdepth 1 -mindepth 1 -type d  -printf '%f\n' > data-$i.txt
 done 
 
+# build a list of the done, but discarded calculations
 for i in OBSOLETE/*
 do
         basename $(tar tzf $i | head -n1)
 done > data-obsolete.txt
 
+# merge all geometry files into one XYZ
 rm data-geo-ts.xyz
 for i in final-ts/*; 
 do 
