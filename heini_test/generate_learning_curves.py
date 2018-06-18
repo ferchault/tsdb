@@ -7,13 +7,13 @@ import common
 if __name__ == "__main__":
   # dict with parameters for ML
   parameters = {
-	"property_file" : "test.txt",
+  "property_file" : "test.txt",
   "N" : [10,20,40,80],
   "CV" : 10,
   "lambda" : 1e-7,
   "sigmas" : [0.1*2**i for i in range(25)],
-	"Representation" : "BoB",
-	"Kernel" : "Gaussian",
+  "Representation" : "BoB",
+  "Kernel" : "Gaussian",
   "seeed" : 667
   }
 
