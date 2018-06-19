@@ -34,4 +34,9 @@ def get_elements_from_label(label):
 	for R in parts[1:5]:
 		elements += substituents[R]
 
-	return set(elements)
+	return sorted(elements)
+
+def get_elements_from_xyz(lines):
+	""" Obtains the set of elements from the lines of a xyz file."""
+	elements = [_.strip().split()[0] for _ in lines[2:]]
+	return sorted(elements)
