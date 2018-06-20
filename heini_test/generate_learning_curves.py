@@ -5,15 +5,14 @@ import numpy as np
 import common
 
 if __name__ == "__main__":
-  # dict with parameters for ML
   parameters = {
   "property_file" : "test.txt",
   "N" : [10,20,40,80],
   "CV" : 10,
   "lambda" : 1e-7,
   "sigmas" : [0.1*2**i for i in range(25)],
-  "Representation" : "BoB",
-  "Kernel" : "Gaussian",
+  "Representation" : "SLATM",
+  "Kernel" : "Laplacian",
   "seeed" : 667
   }
 
@@ -29,7 +28,7 @@ if __name__ == "__main__":
   print parameters["sigmas"][2]
 
   # FCHL Kernel (sigmas implemented)
-  if parameters["Representation"] == "FCHL":
+  '''if parameters["Representation"] == "FCHL":
 
     K = common.get_Kernel(X, parameters["sigmas"], parameters["Kernel"])
     for j in range(nSigmas):
@@ -40,7 +39,7 @@ if __name__ == "__main__":
         s = np.std(maes)/np.sqrt(parameters["CV"])
 
         print(str(parameters["sigmas"][j]) +  "\t" + str(train) + "\t" + str(sum(maes)/len(maes)) + " " + str(s))
-
+  '''
   # all other Kernels (sigma seperate)
   else:
 

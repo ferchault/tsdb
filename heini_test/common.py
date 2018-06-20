@@ -15,6 +15,7 @@ import itertools
 from time import time
 from qml.distance import l2_distance
 
+'''
 def get_FCHL(mols):
   for mol in mols:
     mol.representation = generate_representation(mol.coordinates,mol.nuclear_charges,max_size=123)
@@ -23,7 +24,7 @@ def get_FCHL(mols):
   Y = np.asarray([ mol.properties for mol in mols ])
 
   return X, Y
-
+'''
 def get_SLATM(mols):
   mbtypes = get_slatm_mbtypes([mol.nuclear_charges for mol in mols])
   for mol in mols:
@@ -108,19 +109,25 @@ def get_Representation(mols, Rep):
   if Rep == "BoB": return get_BoB(mols)
   if Rep == "CM": return get_CM(mols)
   if Rep == "SLATM": return get_SLATM(mols)
-  if Rep == "FCHL": return get_FCHL(mols)
+  #if Rep == "FCHL": return get_FCHL(mols)
+  else:
+    print("\ninvalid representation\n")
+    exit(1)
 
 def get_Kernel(X, sigmas, kernel):
   print "\n -> calculating the Kernel"
   start = time()
   if kernel == "Gaussian": K = gaussian_kernel(X,X,sigmas)
   if kernel == "Laplacian": K = laplacian_kernel(X,X,sigmas)
-  if kernel == "local_symmetric" : K = get_local_symmetric_kernels(X, sigmas, two_body_power=4.0, three_body_power=2.0, cut_start=0.6, cut_distance=6.0)
+  #if kernel == "local_symmetric" : K = get_local_symmetric_kernels(X, kernel_args={"sigma":sigmas}, alchemy="off", two_body_power=4.0, three_body_power=2.0, cut_start=0.6, cut_distance=6.0)
+  else:
+    print("\ninvalid Kernel\n")
+    exit(1)
   end = time()
   print(end-start)
 
   return K
-
+'''
 def CrossValidation_fchl(K,train, nModels, llambda,j, total, Yprime):
   total = len(parameters["total"])
   test = total - train
@@ -148,7 +155,7 @@ def CrossValidation_fchl(K,train, nModels, llambda,j, total, Yprime):
   s = np.std(maes)/np.sqrt(nModels)
 
   return maes, s
-
+'''
 def CrossValidation(K,train, nModels, llambda, total, Yprime):
   test = total - train
   maes = []
