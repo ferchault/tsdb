@@ -43,3 +43,23 @@ do
 	LABEL=$(echo $(basename $i) | sed 's/.xyz//')
 	cat $i | sed "2s/.*/$LABEL/" >> data-geo-ts.xyz
 done
+
+# extract free energies
+echo "calc label enthalpyR enthalpyP" > data-gibbs-enthalpy-rp.txt
+for i in $(find 05-rxn-complete/ -maxdepth 1 -mindepth 1 ); 
+do
+	CALC=$(basename $i)
+	LABEL=$(echo $CALC | awk -F '-' '{ print $NF }')
+
+	LASTLOG="$(find 05-rxn-complete/$CALC -path '*/nfP-*' -name run.log | sort | tail -1)"
+	test -f "$LASTLOG" || continue
+	EP=$(grep 'Final Gibbs free enthalpy' $LASTLOG | sed 's/ Eh//;s/.* //' | tail -1)
+	
+	LASTLOG="$(find 05-rxn-complete/$CALC -path '*/nfR-*' -name run.log | sort | tail -1)"
+	test -f "$LASTLOG" || continue
+	ER=$(grep 'Final Gibbs free enthalpy' $LASTLOG | sed 's/ Eh//;s/.* //' | tail -1)
+
+	echo $CALC $LABEL $ER $EP
+done >> data-gibbs-enthalpy-rp.txt
+
+
