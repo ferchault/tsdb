@@ -123,7 +123,7 @@ if __name__ == "__main__":
 
 	xyz = rotate(xyz, axis_X, theta_X)
 
-	print_geom(xyz)
+	#print_geom(xyz)
 	write_geom(xyz)
 
 	######################
@@ -141,6 +141,7 @@ if __name__ == "__main__":
 	C1 = mol.GetAtom(1)
 	C2 = mol.GetAtom(2)
 
+	R1,R2,R3,R4 = ["0" for i in range(4)]
 	for neighbor in ob.OBAtomAtomIter(C1):
 		nbr = neighbor.GetIdx()
 		nbrAtom = mol.GetAtom(nbr)
@@ -151,8 +152,6 @@ if __name__ == "__main__":
 			R1 = check_FG(mol, nbrAtom)
 		if vec[1] < 0:
 			R2 = check_FG(mol, nbrAtom)
-		print("neighbors of C1: ", nbr)
-		print(vec)
 
 	for neighbor in ob.OBAtomAtomIter(C2):
 		nbr = neighbor.GetIdx()
@@ -164,8 +163,6 @@ if __name__ == "__main__":
 			R4 = check_FG(mol, nbrAtom)
 		if vec[1] < 0:
 			R3 = check_FG(mol, nbrAtom)
-		print("neighbors of C1: ", nbr)
-		print(vec)
 
 	if X == "F": X = "A"
 	if X == "Cl": X = "B"
@@ -175,5 +172,5 @@ if __name__ == "__main__":
 	if Y == "Cl": Y = "C"
 	if Y == "Br": Y = "D"
 
-	print(R1, R2, R3, R4, X, Y)
+	print R1 + "_" + R2 + "_" + R3 + "_" + R4 + "_" + X + "_" + Y
 
