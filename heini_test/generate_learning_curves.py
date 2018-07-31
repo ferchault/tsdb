@@ -6,7 +6,9 @@ import common
 
 if __name__ == "__main__":
   parameters = {
-  "property_file" : "test.txt",
+  "train" : "train.txt",
+  "test" : "test.txt",
+	"kfold" : True;
   "N" : [10,20,40,80],
   "CV" : 10,
   "lambda" : 1e-7,
@@ -29,29 +31,26 @@ if __name__ == "__main__":
 
   # FCHL Kernel (sigmas implemented)
   '''if parameters["Representation"] == "FCHL":
-
     K = common.get_Kernel(X, parameters["sigmas"], parameters["Kernel"])
     for j in range(nSigmas):
       maes = []
-
       for train in parameters["N"]:
         maes, s = comcom.CrossValidation_fchl(K, train, parameters["CV"], parameters["lambda"], j, total, Y)
         s = np.std(maes)/np.sqrt(parameters["CV"])
-
         print(str(parameters["sigmas"][j]) +  "\t" + str(train) + "\t" + str(sum(maes)/len(maes)) + " " + str(s))
-  '''
   # all other Kernels (sigma seperate)
   else:
+  '''
 
-    for j in range(nSigmas):
-      K = common.get_Kernel(X, parameters["sigmas"], parameters["Kernel"])
-      maes = []
+  for j in range(nSigmas):
+    K = common.get_Kernel(X, parameters["sigmas"], parameters["Kernel"])
+    maes = []
 
-      for train in parameters["N"]:
-        maes, s = common.CrossValidation(K, train, parameters["CV"], parameters["lambda"], total, Y)
-        s = np.std(maes)/np.sqrt(parameters["CV"])
+    for train in parameters["N"]:
+      maes, s = common.CrossValidation(K, train, parameters["CV"], parameters["lambda"], total, Y, parameters["kfold"])
+      s = np.std(maes)/np.sqrt(parameters["CV"])
 
-        print(str(parameters["sigmas"][j]) + "\t" + str(train) + "\t" + str(sum(maes)/len(maes)) + " " + str(s))
+      print(str(parameters["sigmas"][j]) + "\t" + str(train) + "\t" + str(sum(maes)/len(maes)) + " " + str(s))
 
   # save Kernel
   print "\n save kernel"

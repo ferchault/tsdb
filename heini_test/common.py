@@ -129,6 +129,7 @@ def get_Kernel(X, sigmas, kernel):
   return K
 '''
 def CrossValidation_fchl(K,train, nModels, llambda,j, total, Yprime):
+    
   total = len(parameters["total"])
   test = total - train
   maes = []
@@ -156,29 +157,34 @@ def CrossValidation_fchl(K,train, nModels, llambda,j, total, Yprime):
 
   return maes, s
 '''
-def CrossValidation(K,train, nModels, llambda, total, Yprime):
-  test = total - train
-  maes = []
+def CrossValidation(K,train, nModels, llambda, total, Yprime, kfold):
+	if kfold == False:
+    test = total - train
+    maes = []
 
-  for i in range(nModels):
-    split = range(total)
-    random.shuffle(split)
+    for i in range(nModels):
+      split = range(total)
+      random.shuffle(split)
 
-    training_index  = split[:train]
-    test_index      = split[-test:]
+      training_index  = split[:train]
+      test_index      = split[-test:]
 
-    Y = Yprime[training_index]
-    Ys = Yprime[test_index]
+      Y = Yprime[training_index]
+      Ys = Yprime[test_index]
 
-    C = deepcopy(K[training_index][:,training_index])
-    C[np.diag_indices_from(C)] += llambda
+      C = deepcopy(K[training_index][:,training_index])
+      C[np.diag_indices_from(C)] += llambda
 
-    alpha = cho_solve(C, Y)
+      alpha = cho_solve(C, Y)
 
-    Yss = np.dot((K[training_index][:,test_index]).T, alpha)
-    diff = Yss  - Ys
-    mae = np.mean(np.abs(diff))
-    maes.append(mae)
-  s = np.std(maes)/np.sqrt(nModels)
+      Yss = np.dot((K[training_index][:,test_index]).T, alpha)
+      diff = Yss  - Ys
+      mae = np.mean(np.abs(diff))
+      maes.append(mae)
+    s = np.std(maes)/np.sqrt(nModels)
 
-  return maes, s
+    return maes, s
+
+  #if kfold == True:
+    
+
