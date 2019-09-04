@@ -20,7 +20,7 @@ do
 	mkdir -p $CALCDIR
 	echo $CALC
 	
-	for i in $(python3 ~/workcopies/addFG/bookie/workflow.py $RXN $SOLVENT /mnt/ECHO/bookie/$BUCKET/$CALC | grep 'COMPLETED' | sed 's/.*COMPLETED//')
+	for i in $(python3 ~/workcopies/tsdb/src/workflow.py $RXN $SOLVENT /mnt/ECHO/bookie/$BUCKET/$CALC | grep 'COMPLETED' | sed 's/.*COMPLETED//')
 	do
 		# PROGRESS
 		echo "$BUCKET $CALCLABEL $i" >> $BASEDIR/completed.txt
