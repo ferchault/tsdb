@@ -355,7 +355,19 @@ class NF_Stage(Stage):
     @staticmethod
     def validate_e2_ts(logfile):
         def check_neg_freqs(freqs):
-            return np.amin(freqs) < -400 and len(freqs[freqs < 0]) == 1
+            return np.amin(freqs) < -50 and len(freqs[freqs < 0]) == 1
+
+        def check_magn_displacements(labels, coords, displacements):
+           scale = {'H' : 1.0079, 'C' : 12.011, 'N' : 14.007, 'O' : 15.999, 'F' : 18.988, 'Cl' : 35.453, 'Br' : 79.904}
+           atom_types = {'H' : 1., 'C' : 6., 'N' : 7., 'O' : 8., 'F' : 9., 'Cl' : 17., 'Br' : 35.}
+
+           for i in range(len(displacements)):
+             displacements[i] = np.linalg.norm(displacements[i] * scale[labels[i]])
+
+           mean_1 = np.sum(displacements[:2]) / 3
+           mean_2 = np.sum(displacements[5:]) / (len(displacements) - 5)
+
+           return (mean_1 > mean_2)
 
         def check_displacements_e2(coords, displacements):
             # get bonds
