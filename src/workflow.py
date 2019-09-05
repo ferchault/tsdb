@@ -521,7 +521,7 @@ class NF_Stage(Stage):
             return (2 in sort_idx_displ[0:3]) and (3 in sort_idx_displ[0:3])
         
         
-        data = quiet_ccopen(logfile)
+        data = Stage.quiet_ccopen(logfile)
         
         ts = data.atomcoords[-1]                                   
         displaced = ts + data.vibdisps[0]                          
