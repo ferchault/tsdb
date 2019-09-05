@@ -52,7 +52,7 @@ do
 		LOGFILE=$LASTDIR/run.log
 		ne=$(grep " Number of Electrons    NEL             ...." $LOGFILE | head -1 | awk '{print $6}')
 		lumo=$(( $ne / 2 | bc -l))
-		lumo=$(( $ne / 2 | bc -l))
+		homo=$(( $ne / 2 - 1 | bc -l))
 		E_lumo=$(grep " $lumo   0.0000   " $LOGFILE | tail -1 | awk '{print $3}')
 		E_homo=$(grep " $homo   2.0000   " $LOGFILE | tail -1 | awk '{print $3}')
 		gap=$( echo $E_lumo- $E_homo | bc -l)
@@ -61,12 +61,11 @@ do
 
 		#Dipole moment by Marco Bragato
 		LOGFILE=$LASTDIR/run.log
-		dipole_x_y_z=$(grep "Total Dipole" run.log | tail -1 | awk '{print $5 "     " $6 "     " $7}')
-		dipole_tot=$(grep -A2 "Total Dipole" run.log | tail -1 | awk '{print $4}')
+		dipole_x_y_z=$(grep "Total Dipole" $LOGFILE | tail -1 | awk '{print $5 "     " $6 "     " $7}')
+		dipole_tot=$(grep -A2 "Total Dipole" $LOGFILE | tail -1 | awk '{print $4}')
 		echo $BUCKET $CALCLABEL $TARGETLABEL 'MP2/6-311G(d)//MP2/6-311G(d)' $i "$dipole_x_y_z $dipole_tot" >> $BASEDIR/dipole-moment.txt
 		
 	done
-
 done
 
 }
