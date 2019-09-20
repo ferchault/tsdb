@@ -8,7 +8,7 @@ basedir='RESULTS/'
 
 # Get valid calculations (i.e. have the sp stage completed for that calc)
 completed = pd.read_csv(basedir + 'completed.txt', sep=' ', header=None, names='rxn calc step'.split())
-completed = completed.query('step=="sp"')
+completed = completed.query('step=="nf"')
 
 # Obtain TS energies for reference level of theory
 tsenergies = pd.read_csv(basedir + 'total-electronic-energies.txt', sep=' ', header=None, names='rxn calc target lot step energy'.split())
